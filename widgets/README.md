@@ -3,6 +3,7 @@ page_type: sample
 languages:
 - html
 - javascript
+- CSS
 products:
 - videoindexer
 description: "Video Indexer widgets"
