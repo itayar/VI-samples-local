@@ -19,7 +19,7 @@ Guidance on onboarding samples to docs.microsoft.com/samples: https://review.doc
 Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
 -->
 
-This folder contains the basic frontend code in order to embed Video Indexer's widgets in your own service.
+This folder contains the basic frontend code in order to embed Video Indexer's widgets in your own service and examples for the output json file you will recieve using our API.
 
 The widgets are divided to player and insight widgets.
 
