@@ -29,10 +29,20 @@ For more detailed examples, please visit our [Codepen page](https://codepen.io/v
 
 Contains samples code for Video Indexer API and Widgets
 
-| File/folder       | Description                                |
-|-------------------|--------------------------------------------|
-| `samples`         | Samples source code.                       |
-| `schema`          | The output Json files you will receive     |
+| File/folder                       | Description                                |
+|-----------------------------------|--------------------------------------------|
+| `samples`                         | Samples source code.                       |
+| `schema`                          | The output Json files you will receive     |
+| `azure-media-player`              | The output Json files you will receive     |
+| `azure-medoa-player-vi-insights`  | The output Json files you will receive     |
+| `control-vi-embedded-player`      | The output Json files you will receive     |
+| `custom-index-location`           | The output Json files you will receive     |
+| `embed-both-insights`             | The output Json files you will receive     |
+| `embed-insights-with-AMP`         | The output Json files you will receive     |
+| `customize-the-widgets`           | The output Json files you will receive     |
+| `embed-both-widgets`              | The output Json files you will receive     |
+| `url-generator`                   | The output Json files you will receive     |
+| `html5-player`                    | The output Json files you will receive     |
 
 
 ## Prerequisites
