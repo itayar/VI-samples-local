@@ -66,7 +66,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 ## Authors
 For each folder you will find a README file which will specify the relevant author for the sample code you are looking at.
 
-See also the list of [contributors]() who participated in this project.
+See also the list of [contributors](https://github.com/itayar/media-services-video-indexer/graphs/contributors) who participated in this project.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
