@@ -9,7 +9,7 @@ products:
 description: "Video Indexer widgets"
 ---
 
-# Official Azure Media Services | Video Indexer widgets page
+# Official Azure Media Services | Video Indexer widgets page blablabla
 
 <!-- 
 Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
