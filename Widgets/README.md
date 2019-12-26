@@ -31,10 +31,8 @@ Contains samples code for Video Indexer API and Widgets
 
 | File/folder                       | Description                                |
 |-----------------------------------|--------------------------------------------|
-| `samples`                         | Samples source code.                       |
-| `schema`                          | The output Json files you will receive     |
 | `azure-media-player`              | The output Json files you will receive     |
-| `azure-medoa-player-vi-insights`  | The output Json files you will receive     |
+| `azure-media-player-vi-insights`  | The output Json files you will receive     |
 | `control-vi-embedded-player`      | The output Json files you will receive     |
 | `custom-index-location`           | The output Json files you will receive     |
 | `embed-both-insights`             | The output Json files you will receive     |
