@@ -330,7 +330,7 @@ You can read more about this model in our [blog post](https://azure.microsoft.co
     ![](pics/image14.png)
 
 5.  **Emotions**: Video Indexer has also identified the different
-    emotions that appear throughout the video. The model can identify four different emotions: anger, fear, joy, and sadness. It does so by using facial expressions, voice tonality, and speech content. It gives a better tuning for the basic sentiment analysis of positive and negative emotions. For further details follow the [link](https://azure.microsoft.com/en-us/blog/cross-channel-emotion-analysis-in-microsoft-video-indexer/)
+    emotions that appear throughout the video. The model can identify four different emotions: anger, fear, joy, and sadness. It does so by using facial expressions, voice tonality, and speech content. It gives a better tuning for the basic sentiment analysis of positive and negative emotions. For further details follow this [link](https://azure.microsoft.com/en-us/blog/cross-channel-emotion-analysis-in-microsoft-video-indexer/).
 
     Click on each segment to see what actually happened in the video to drive that. you can see
     that overall (unsurprisingly) joy was the main emotions of Satya’s keynote.
