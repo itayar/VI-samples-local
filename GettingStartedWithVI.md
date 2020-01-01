@@ -335,7 +335,8 @@ Here is well, use the arrows to jump to the specific
 Click on each segment to see what actually happened in the video to drive that. you can see
     that overall (unsurprisingly) joy was the main emotions of Satya’s keynote  .
 
-    ![](pics/image15.png  )
+    ![](pics/image15.png)
+    
 As part of the default insights presented you can also see the different scenes detected in the video based on visual cues and keyframes extraction.
 **Important** - this is only a partial list of the available features of Video Indexer. You can find out more about the different features we offer in our (documentation)[https://docs.microsoft.com/en-us/azure/media-services/video-indexer/video-indexer-overview#features].
 6.  **Download the insights as a JSON file** by clicking on the **Download** button at the
