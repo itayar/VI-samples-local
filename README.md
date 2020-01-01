@@ -27,9 +27,10 @@ Contains samples code for Video Indexer API and Widgets
 
 | File/folder                 | Description                                         |
 |-----------------------------|-----------------------------------------------------|
+| `VideoIndexerIntro.md`      | An intro lab to Video Indexer with exercises        |
 | `Widgets`                   | How to add Video Indexer widgets to your app.       |
 | `VideoDescriptionSample`    | Display an automatic description of VI thumbnails.  |
-| `Error messages`            | List of common error messages and their causes      |
+| `pics`                      | Pictures used in the intro lab                      |
 | `.gitignore`                | Define what to ignore at commit time.               |
 | `CHANGELOG.md`              | List of changes to the sample.                      |
 | `CONTRIBUTING.md`           | Guidelines for contributing to the sample.          |
