@@ -286,10 +286,10 @@ participants)
     the model with your own celebrities, by tagging additional faces
     identified in your uploaded video.
 
-*Furthermore, the face model can be trained by images you upload and once you updated the model - the new face recognition model will update all relevant videos already uploaded and all future videos.*
+    *Furthermore, the face model can be trained by images you upload and once you updated the model - the new face recognition model will update all relevant videos already uploaded and all future videos.*
 
 2.  **Topics identification**: Video Indexer uses the information on the transcript, gathered from the spoken information as well as OCR findings in the video, and celebrities it recognized and their bio in Wikipedia to identify relevant topics (i.e. what this video is about?), even if they weren’t mentioned explicitly.
-You can read more about this model in our (blog post) [https://azure.microsoft.com/en-us/blog/multi-modal-topic-inferencing-from-videos/].
+You can read more about this model in our [blog post](https://azure.microsoft.com/en-us/blog/multi-modal-topic-inferencing-from-videos/).
 
     This can help you get the essence of what was discussed in this
     video. In this case we can see that Satya referred to the
@@ -330,7 +330,7 @@ You can read more about this model in our (blog post) [https://azure.microsoft.c
     ![](pics/image14.png)
 
 5.  **Emotions**: Video Indexer has also identified the different
-    emotions that appear throughout the video. The model can identify four different emotions: anger, fear, joy, and sadness. It does so     by using facial expressions, voice tonality, and speech content. It gives a better tuning for the basic sentiment analysis of positive and negative emotions. For further details follow the (link)[https://azure.microsoft.com/en-us/blog/cross-channel-emotion-analysis-in-microsoft-video-indexer/]
+    emotions that appear throughout the video. The model can identify four different emotions: anger, fear, joy, and sadness. It does so by using facial expressions, voice tonality, and speech content. It gives a better tuning for the basic sentiment analysis of positive and negative emotions. For further details follow the [link](https://azure.microsoft.com/en-us/blog/cross-channel-emotion-analysis-in-microsoft-video-indexer/)
 
     Click on each segment to see what actually happened in the video to drive that. you can see
     that overall (unsurprisingly) joy was the main emotions of Satya’s keynote.
@@ -338,7 +338,8 @@ You can read more about this model in our (blog post) [https://azure.microsoft.c
     ![](pics/image15.png)
 
 As part of the default insights presented you can also see the different scenes detected in the video based on visual cues and keyframes extraction.
-**Important** - this is only a partial list of the available features of Video Indexer. You can find out more about the different features we offer in our (documentation)[https://docs.microsoft.com/en-us/azure/media-services/video-indexer/video-indexer-overview#features].
+
+**Important** - this is only a partial list of the available features of Video Indexer. You can find out more about the different features we offer in our [documentation](https://docs.microsoft.com/en-us/azure/media-services/video-indexer/video-indexer-overview#features).
 
 6.  **Download the insights as a JSON file** by clicking on the **Download** button at the
     bottom left of the video player. You can also download the transcript in different closed caption formats and other file types (SRT, VTT, TTML, TXT and CSV)
@@ -517,7 +518,8 @@ After pressing render, a pop up will appear asking if you want to continue with 
 8. A new video that contains a clip from the original video was added
     to your catalog and it’s ready to be played!
 
-**Two important things-** 
+**Two important things:** 
+
 A. This whole process could also be done using the API presented in the next section.
 
 B. Until you render the project, the project is dependent on the original videos from which it was samples. Therefore, if you delete an original video before rendering the project it will distort you project.
