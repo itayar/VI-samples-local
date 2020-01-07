@@ -15,7 +15,9 @@ using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Newtonsoft.Json;
 using System.Text;
 using VideoDescription.Util;
-using VideoDescription.CognitiveServices;
+using Newtonsoft.Json.Linq;
+using VideoIndexerLibrary;
+using TranslatorLibrary;
 
 namespace VideoDescription.Controllers
 {
@@ -23,52 +25,66 @@ namespace VideoDescription.Controllers
     {
         private const string dirHighRes = "highres";
         private const string dirLowRes = "lowres";
+        private const string dirInsights = "insights";
+        private const string fileInsights = "insights.json";
 
 
         public JsonResult LongRunningProcess(string mode, string videoId, string viAcctID, string viSubKey, string viLocation, string translationLang)
         {
+            ViewBag.ErrorMsg = String.Empty;//Reset error message
             // let's save the VI credentials intot the user sessions variable to display them when the page refresh
-            System.Web.HttpContext.Current.Session["videoId"] = videoId;
-            System.Web.HttpContext.Current.Session["VideoIndexerAccountId"] = viAcctID;
-            System.Web.HttpContext.Current.Session["VideoIndexerSubscriptionKey"] = viSubKey;
-            System.Web.HttpContext.Current.Session["VideoIndexerLocation"] = viLocation;
-            System.Web.HttpContext.Current.Session["TranslationLang"] = translationLang;
+            HttpContextProvider.Current.Session["videoId"] = videoId;
+            HttpContextProvider.Current.Session["VideoIndexerAccountId"] = viAcctID;
+            HttpContextProvider.Current.Session["VideoIndexerSubscriptionKey"] = viSubKey;
+            HttpContextProvider.Current.Session["VideoIndexerLocation"] = viLocation;
+            HttpContextProvider.Current.Session["TranslationLang"] = translationLang;
 
             Task.Run(async () => await Importviscenes(mode, videoId, viAcctID, viSubKey, viLocation, translationLang).ConfigureAwait(false)).GetAwaiter().GetResult();
 
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
-
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             // when the page loads for the first time, we load the default settings from the config file
-            if (System.Web.HttpContext.Current.Session["VideoIndexerAccountId"] == null)
+            if (HttpContextProvider.Current.Session["VideoIndexerAccountId"] == null)
             {
-                System.Web.HttpContext.Current.Session["VideoIndexerAccountId"] = ConfigurationManager.AppSettings["VideoIndexerAccountId"];
+                HttpContextProvider.Current.Session["VideoIndexerAccountId"] = ConfigurationManager.AppSettings["VideoIndexerAccountId"];
             }
 
-            if (System.Web.HttpContext.Current.Session["VideoIndexerSubscriptionKey"] == null)
+            if (HttpContextProvider.Current.Session["VideoIndexerSubscriptionKey"] == null)
             {
-                System.Web.HttpContext.Current.Session["VideoIndexerSubscriptionKey"] = ConfigurationManager.AppSettings["VideoIndexerSubscriptionKey"];
+                HttpContextProvider.Current.Session["VideoIndexerSubscriptionKey"] = ConfigurationManager.AppSettings["VideoIndexerSubscriptionKey"];
             }
 
-            if (System.Web.HttpContext.Current.Session["VideoIndexerLocation"] == null)
+            if (HttpContextProvider.Current.Session["VideoIndexerLocation"] == null)
             {
-                System.Web.HttpContext.Current.Session["VideoIndexerLocation"] = ConfigurationManager.AppSettings["VideoIndexerLocation"];
+                HttpContextProvider.Current.Session["VideoIndexerLocation"] = ConfigurationManager.AppSettings["VideoIndexerLocation"];
             }
 
-            if (System.Web.HttpContext.Current.Session["TranslationLang"] == null)
+            if (HttpContextProvider.Current.Session["TranslationLang"] == null)
             {
-                System.Web.HttpContext.Current.Session["TranslationLang"] = ConfigurationManager.AppSettings["TranslationLang"];
+                HttpContextProvider.Current.Session["TranslationLang"] = ConfigurationManager.AppSettings["TranslationLang"];
             }
 
-            CloudStorageAccount account = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["StorageConnectionString"]);
+            CloudStorageAccount account = null;
+            try
+            {
+                account = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["StorageConnectionString"]);
+            }
+            catch (Exception exc)
+            {
+                ViewBag.ErrorMsg = exc.ToString();
+                Functions.SendProgress("Error:" + exc.Message, 0, 1);
+                return View();
+            }
+
             CloudBlobClient client = account.CreateCloudBlobClient();
             string videoId = (string)System.Web.HttpContext.Current.Session["videoId"];
 
             // Pass a list of blob URIs in ViewBag
             List<BlobInfo> blobs = new List<BlobInfo>();
+            List<SpeakerStats> SpeakersStatsBuilder = new List<SpeakerStats>();
 
             if (videoId != null)
             {
@@ -79,9 +95,11 @@ namespace VideoDescription.Controllers
                 {
                     blobsList = container.ListBlobs(prefix: dirHighRes + "/", useFlatBlobListing: true).ToList();
                 }
-                catch
+                catch (Exception exc)
                 {
+                    ViewBag.ErrorMsg = exc.ToString();
                     videoId = null;
+                    Functions.SendProgress("Error:" + exc.Message, 0, 1);
                 }
 
                 foreach (IListBlobItem item in blobsList)
@@ -107,29 +125,59 @@ namespace VideoDescription.Controllers
                         });
                     }
                 }
+
+                /*
+                // Reading insights about speakers
+                CloudBlockBlob insightsBlob = container.GetBlockBlobReference(dirInsights + "/" + fileInsights);
+                try
+                {
+                    string jsonData = await insightsBlob.DownloadTextAsync().ConfigureAwait(false);
+                    dynamic jObj = JObject.Parse(jsonData);
+                    dynamic speakers = jObj.videos[0].insights.speakers;
+                    foreach (dynamic speaker in speakers)
+                    {
+                        TimeSpan duration = new TimeSpan();
+                        foreach (dynamic inst in speaker.instances)
+                        {
+                            duration += DateTime.Parse((string)inst.end) - DateTime.Parse((string)inst.start);
+                        }
+                        SpeakersStatsBuilder.Add(new SpeakerStats() { Name = (string)speaker.name, Duration = duration });
+                    }
+                }
+                catch
+                {
+
+                }
+                */
             }
 
+            ViewBag.SpeakerStats = SpeakersStatsBuilder.Count > 0 ? SpeakersStatsBuilder.OrderByDescending(s => s.Duration) : null;
             ViewBag.Blobs = blobs.OrderBy(bl => bl.AdjustedStart).ToArray();
             ViewBag.VideoId = videoId;
-            ViewBag.VideoIndexerAccountId = System.Web.HttpContext.Current.Session["VideoIndexerAccountId"];
-            ViewBag.VideoIndexerSubscriptionKey = System.Web.HttpContext.Current.Session["VideoIndexerSubscriptionKey"];
-            ViewBag.VideoIndexerLocation = System.Web.HttpContext.Current.Session["VideoIndexerLocation"];
-            ViewBag.TranslationLang = System.Web.HttpContext.Current.Session["TranslationLang"];
 
+            ViewBag.VideoIndexerAccountId = HttpContextProvider.Current.Session["VideoIndexerAccountId"];
+            ViewBag.VideoIndexerSubscriptionKey = HttpContextProvider.Current.Session["VideoIndexerSubscriptionKey"];
+            ViewBag.VideoIndexerLocation = HttpContextProvider.Current.Session["VideoIndexerLocation"];
+            ViewBag.TranslationLang = HttpContextProvider.Current.Session["TranslationLang"];
 
             if (videoId != null)
             {
                 try
                 {
-                    VideoIndexer myVI = new VideoIndexer(
-                        (string)System.Web.HttpContext.Current.Session["VideoIndexerAccountId"],
-                        (string)System.Web.HttpContext.Current.Session["VideoIndexerLocation"],
-                        (string)System.Web.HttpContext.Current.Session["VideoIndexerSubscriptionKey"]);
+                   VideoIndexer myVI = new VideoIndexer(
+                        (string)HttpContextProvider.Current.Session["VideoIndexerAccountId"],
+                        (string)HttpContextProvider.Current.Session["VideoIndexerLocation"],
+                        (string)HttpContextProvider.Current.Session["VideoIndexerSubscriptionKey"]);
 
                     ViewBag.VideoAccessToken = Task.Run(async () => await myVI.GetVideoAccessTokenAsync(videoId).ConfigureAwait(false)).GetAwaiter().GetResult();
+                    ViewBag.PlayerWidgetUrl = Task.Run(async () => await myVI.GetPlayerWidgetAsync(videoId).ConfigureAwait(false)).GetAwaiter().GetResult();
+                    ViewBag.VideoInsightsWidgetUrl = Task.Run(async () => await myVI.GetVideoInsightsWidgetAsync(videoId, false).ConfigureAwait(false)).GetAwaiter().GetResult();
+
                 }
-                catch
+                catch (Exception exc)
                 {
+                    ViewBag.ErrorMsg = exc.ToString();
+                    Functions.SendProgress("Error in VideoIndexer:" + exc.Message, 0, 1);
                 }
             }
 
@@ -185,12 +233,11 @@ namespace VideoDescription.Controllers
                 }
                 await Task.WhenAll(myTasks.ToArray()).ConfigureAwait(false);
             }
-            catch
+            catch (Exception exc)
             {
-
+                ViewBag.ErrorMsg = exc.ToString();
+                Functions.SendProgress("Error in ListBlobs:" + exc.Message, 0, 1);
             }
-
-
 
             // user wants only purge
             if (mode == "purge") return;
@@ -221,10 +268,18 @@ namespace VideoDescription.Controllers
                 //videoToken = await myVI.GetVideoAccessTokenAsync(videoId).ConfigureAwait(false);
                 jsonData = await myVI.GetInsightsAsync(videoId).ConfigureAwait(false);
             }
-            catch
+            catch (Exception exc)
             {
+                ViewBag.ErrorMsg = exc.ToString();
+                Functions.SendProgress("Error in GetInsightsAsync:" + exc.Message, 0, 1);
+
                 return;
             }
+
+            // SAVING INSIGHTS AS A BLOB
+            CloudBlockBlob insightsBlob = containerVideoId.GetBlockBlobReference(dirInsights + "/" + fileInsights);
+            JObject jObj = JObject.Parse(jsonData);
+            await insightsBlob.UploadTextAsync(jObj.ToString(Formatting.Indented)).ConfigureAwait(false);
 
             List<BlobInfo> blobs = new List<BlobInfo>();
 
@@ -319,8 +374,18 @@ namespace VideoDescription.Controllers
 
                     if (!string.IsNullOrEmpty(translationLang))
                     {
-                        string descriptionTranslated = await Translator.TranslateTextRequest(translatorSubscriptionKey, translatorEndpoint, result.Description.Captions[0].Text, translationLang).ConfigureAwait(false);
-                        thumbnailHighResBlob.Metadata.Add("DescriptionTranslated", Convert.ToBase64String(Encoding.UTF8.GetBytes(descriptionTranslated)));
+                        try
+                        {
+                            string descriptionTranslated = await Translator.TranslateTextRequest(translatorSubscriptionKey, translatorEndpoint, result.Description.Captions[0].Text, translationLang).ConfigureAwait(false);
+                            thumbnailHighResBlob.Metadata.Add("DescriptionTranslated", Convert.ToBase64String(Encoding.UTF8.GetBytes(descriptionTranslated)));
+                        }
+                        catch (Exception exc)
+                        {
+                            ViewBag.ErrorMsg = exc.ToString();
+                            Functions.SendProgress("Error in TranslateTextRequest:" + exc.Message, 0, 1);
+                        }
+
+
                     }
 
                     //var guidThumbnail = Path.GetFileNameWithoutExtension(thumbnailHighResBlob.Name).Substring(18);

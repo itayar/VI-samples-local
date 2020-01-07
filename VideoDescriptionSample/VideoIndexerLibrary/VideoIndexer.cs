@@ -7,15 +7,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
+using System.Web;
+using System.Globalization;
+using System.Collections.Specialized;
 
-namespace VideoDescription.CognitiveServices
+namespace VideoIndexerLibrary
 {
-    internal class VideoIndexerVideoToken
-    {
-        public string token { get; set; }
-        public DateTime expirationTime { get; set; }
-    }
-
+  
     public class VideoIndexer
     {
         private string _accountId;
@@ -23,6 +21,8 @@ namespace VideoDescription.CognitiveServices
         private string _subscriptionKey;
         private static HttpClientHandler handler = new HttpClientHandler() { AllowAutoRedirect = false };
         private static HttpClient client = new HttpClient(handler);
+        private static NameValueCollection queryString = HttpUtility.ParseQueryString(string.Empty);
+
         private const string apiUrl = "https://api.videoindexer.ai";
         private Dictionary<string, VideoIndexerVideoToken> videoAccessTokens = new Dictionary<string, VideoIndexerVideoToken>();
 
@@ -56,6 +56,77 @@ namespace VideoDescription.CognitiveServices
             return videoAccessTokens[videoId].token;
         }
 
+        
+        public async Task<string> GetInsightsAsync(string videoId)
+        {
+            string videoAccessToken = await GetVideoAccessTokenAsync(videoId).ConfigureAwait(false);
+            queryString.Clear();
+            queryString["accessToken"] = videoAccessToken;
+            Uri requestUri = new Uri($"{apiUrl}/{_location}/Accounts/{_accountId}/Videos/{videoId}/Index?{queryString}");
+
+            HttpResponseMessage insightsRequestResult = await client.GetAsync(requestUri).ConfigureAwait(false);
+
+            if (!insightsRequestResult.IsSuccessStatusCode)
+            {
+                throw new Exception(insightsRequestResult.ReasonPhrase);
+            }
+
+            return await insightsRequestResult.Content.ReadAsStringAsync().ConfigureAwait(false);
+        }
+
+
+        public async Task<Stream> GetVideoThumbnailAsync(string videoId, string thumbnailId)
+        {
+            string videoAccessToken = await GetVideoAccessTokenAsync(videoId).ConfigureAwait(false);
+            queryString.Clear();
+            queryString["accessToken"] = videoAccessToken;
+            queryString["format"] = "Jpeg";
+            Uri requestUri = new Uri($"{apiUrl}/{_location}/Accounts/{_accountId}/Videos/{videoId}/Thumbnails/{thumbnailId}?{queryString}");
+
+            HttpResponseMessage thumbnailRequestResult = await client.GetAsync(requestUri).ConfigureAwait(false);
+
+            if (!thumbnailRequestResult.IsSuccessStatusCode)
+            {
+                throw new Exception(thumbnailRequestResult.ReasonPhrase);
+            }
+
+            return await thumbnailRequestResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        }
+
+
+        public async Task<Uri> GetPlayerWidgetAsync(string videoId)
+        {
+            queryString.Clear();
+            return await GetWidgetAsync(videoId, "PlayerWidget", queryString).ConfigureAwait(false);
+        }
+
+
+        public async Task<Uri> GetVideoInsightsWidgetAsync(string videoId, bool allowEdit)
+        {
+            queryString.Clear();
+            queryString["allowEdit"] = allowEdit.ToString(CultureInfo.InvariantCulture);
+
+            return await GetWidgetAsync(videoId, "InsightsWidget", queryString).ConfigureAwait(false);
+        }
+
+        private async Task<Uri> GetWidgetAsync(string videoId, string widgetAPIstr, NameValueCollection queryString)
+        {
+            string videoAccessToken = await GetVideoAccessTokenAsync(videoId).ConfigureAwait(false);
+            queryString["accessToken"] = videoAccessToken;
+
+            Uri requestUri = new Uri($"{apiUrl}/{_location}/Accounts/{_accountId}/Videos/{videoId}/{widgetAPIstr}?{queryString}");
+
+            HttpResponseMessage insightsRequestResult = await client.GetAsync(requestUri).ConfigureAwait(false);
+
+            if (insightsRequestResult.StatusCode == System.Net.HttpStatusCode.MovedPermanently)
+            {
+                return insightsRequestResult.Headers.Location;
+            }
+            else
+            {
+                throw new Exception(insightsRequestResult.ReasonPhrase);
+            }
+        }
 
         private async Task<string> GetAccessTokenAsync(string requestUrl)
         {
@@ -72,36 +143,6 @@ namespace VideoDescription.CognitiveServices
             client.DefaultRequestHeaders.Remove("Ocp-Apim-Subscription-Key");
 
             return (await requestResult.Content.ReadAsStringAsync().ConfigureAwait(false)).Replace("\"", "");
-        }
-
-
-        public async Task<string> GetInsightsAsync(string videoId)
-        {
-            string videoAccessToken = await GetVideoAccessTokenAsync(videoId).ConfigureAwait(false);
-            Uri requestUri = new Uri($"{apiUrl}/{_location}/Accounts/{_accountId}/Videos/{videoId}/Index?accessToken={videoAccessToken}");
-            HttpResponseMessage insightsRequestResult = await client.GetAsync(requestUri).ConfigureAwait(false);
-
-            if (!insightsRequestResult.IsSuccessStatusCode)
-            {
-                throw new Exception(insightsRequestResult.ReasonPhrase);
-            }
-
-            return await insightsRequestResult.Content.ReadAsStringAsync().ConfigureAwait(false);
-        }
-
-
-        public async Task<Stream> GetVideoThumbnailAsync(string videoId, string thumbnailId)
-        {
-            string videoAccessToken = await GetVideoAccessTokenAsync(videoId).ConfigureAwait(false);
-            Uri requestUri = new Uri($"{apiUrl}/{_location}/Accounts/{_accountId}/Videos/{videoId}/Thumbnails/{thumbnailId}?format=Jpeg&accessToken={videoAccessToken}");
-            HttpResponseMessage thumbnailRequestResult = await client.GetAsync(requestUri).ConfigureAwait(false);
-
-            if (!thumbnailRequestResult.IsSuccessStatusCode)
-            {
-                throw new Exception(thumbnailRequestResult.ReasonPhrase);
-            }
-
-            return await thumbnailRequestResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
         }
     }
 }

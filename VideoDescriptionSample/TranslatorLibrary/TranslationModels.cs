@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace VideoDescription.Models
+namespace TranslatorLibrary
 {
     /// <summary>
     /// The C# classes that represents the JSON returned by the Translator Text API.

@@ -5,20 +5,17 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Text;
-using VideoDescription.Models;
-using System.Linq;
 
-namespace VideoDescription.Controllers
+namespace TranslatorLibrary
 {
-    class Translator
+    public class Translator
     {
-       
         private static HttpClient ClientTranslator = new HttpClient();
         private const string TranslatorRoute = "/translate?api-version=3.0&to=";
-
 
         static public async Task<string> TranslateTextRequest(string subscriptionKey, string endpoint, string inputText, string translationLang)
         {
