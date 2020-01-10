@@ -84,7 +84,6 @@ namespace VideoDescription.Controllers
 
             // Pass a list of blob URIs in ViewBag
             List<BlobInfo> blobs = new List<BlobInfo>();
-            List<SpeakerStats> SpeakersStatsBuilder = new List<SpeakerStats>();
 
             if (videoId != null)
             {
@@ -126,32 +125,36 @@ namespace VideoDescription.Controllers
                     }
                 }
 
-                /*
-                // Reading insights about speakers
-                CloudBlockBlob insightsBlob = container.GetBlockBlobReference(dirInsights + "/" + fileInsights);
-                try
+                var speakerS = ConfigurationManager.AppSettings["SpeakerStatsFeature"];
+                if (speakerS != null && bool.Parse(speakerS))
                 {
-                    string jsonData = await insightsBlob.DownloadTextAsync().ConfigureAwait(false);
-                    dynamic jObj = JObject.Parse(jsonData);
-                    dynamic speakers = jObj.videos[0].insights.speakers;
-                    foreach (dynamic speaker in speakers)
+                    List<SpeakerStats> SpeakersStatsBuilder = new List<SpeakerStats>();
+
+                    // Reading insights about speakers
+                    CloudBlockBlob insightsBlob = container.GetBlockBlobReference(dirInsights + "/" + fileInsights);
+                    try
                     {
-                        TimeSpan duration = new TimeSpan();
-                        foreach (dynamic inst in speaker.instances)
+                        string jsonData = await insightsBlob.DownloadTextAsync().ConfigureAwait(false);
+                        dynamic jObj = JObject.Parse(jsonData);
+                        dynamic speakers = jObj.videos[0].insights.speakers;
+                        foreach (dynamic speaker in speakers)
                         {
-                            duration += DateTime.Parse((string)inst.end) - DateTime.Parse((string)inst.start);
+                            TimeSpan duration = new TimeSpan();
+                            foreach (dynamic inst in speaker.instances)
+                            {
+                                duration += DateTime.Parse((string)inst.end) - DateTime.Parse((string)inst.start);
+                            }
+                            SpeakersStatsBuilder.Add(new SpeakerStats() { Name = (string)speaker.name, Duration = duration });
                         }
-                        SpeakersStatsBuilder.Add(new SpeakerStats() { Name = (string)speaker.name, Duration = duration });
+                        ViewBag.SpeakerStats = SpeakersStatsBuilder.Count > 0 ? SpeakersStatsBuilder.OrderByDescending(s => s.Duration) : null;
+                    }
+                    catch
+                    {
+
                     }
                 }
-                catch
-                {
-
-                }
-                */
             }
 
-            ViewBag.SpeakerStats = SpeakersStatsBuilder.Count > 0 ? SpeakersStatsBuilder.OrderByDescending(s => s.Duration) : null;
             ViewBag.Blobs = blobs.OrderBy(bl => bl.AdjustedStart).ToArray();
             ViewBag.VideoId = videoId;
 
@@ -164,10 +167,10 @@ namespace VideoDescription.Controllers
             {
                 try
                 {
-                   VideoIndexer myVI = new VideoIndexer(
-                        (string)HttpContextProvider.Current.Session["VideoIndexerAccountId"],
-                        (string)HttpContextProvider.Current.Session["VideoIndexerLocation"],
-                        (string)HttpContextProvider.Current.Session["VideoIndexerSubscriptionKey"]);
+                    VideoIndexer myVI = new VideoIndexer(
+                         (string)HttpContextProvider.Current.Session["VideoIndexerAccountId"],
+                         (string)HttpContextProvider.Current.Session["VideoIndexerLocation"],
+                         (string)HttpContextProvider.Current.Session["VideoIndexerSubscriptionKey"]);
 
                     ViewBag.VideoAccessToken = Task.Run(async () => await myVI.GetVideoAccessTokenAsync(videoId).ConfigureAwait(false)).GetAwaiter().GetResult();
                     ViewBag.PlayerWidgetUrl = Task.Run(async () => await myVI.GetPlayerWidgetAsync(videoId).ConfigureAwait(false)).GetAwaiter().GetResult();
