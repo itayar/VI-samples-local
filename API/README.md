@@ -18,8 +18,8 @@ Guidance on onboarding samples to docs.microsoft.com/samples: https://review.doc
 Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
 -->
 
-This folder contains the basic ways to address Video Indexer's API in order to allow full engagment with the product: upload a video, polling on status/waiting for url callback,
-indexing the video, getting the video/player widgets. It is highly recommend to first read the more detailed documntation which can be found [here](https://docs.microsoft.com/en-us/azure/media-services/video-indexer/video-indexer-use-apis).
+This folder contains the basic ways to address Video Indexer's API in order to allow full engagment with the product: upload a video, polling on status/waiting for url callback, and indexing the video. 
+It is highly recommend to first read the more detailed documntation which can be found [here](https://docs.microsoft.com/en-us/azure/media-services/video-indexer/video-indexer-use-apis).
 
 For more API abilities, please visit our [API documentation](https://api-portal.videoindexer.ai/docs/services/)
 
