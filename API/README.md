@@ -39,7 +39,7 @@ Instructions before running the code:
 
 •	Code uses .Net Core 3.0 built-in JSON serializer
 
-Again, It is highly recommend to first read the more detailed documntation which can be found [here](https://docs.microsoft.com/en-us/azure/media-services/video-indexer/video-indexer-use-apis)
+Again, It is highly recommend to first read the more detailed documentation which can be found [here](https://docs.microsoft.com/en-us/azure/media-services/video-indexer/video-indexer-use-apis)
 <!--
 Outline the required components and tools that a user might need to have on their machine in order to run the sample. This can be anything from frameworks, SDKs, OS versions or IDE releases. 
 -->
