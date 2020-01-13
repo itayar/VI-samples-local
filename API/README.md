@@ -35,9 +35,9 @@ Make sure to read the inline comments and notice our best practices advices.
 
 Instructions before running the code:
  
-•	Code is written for .Net Standard 2.0 and above.
+•	Code is written for .Net Core 3.0 and above.
 
-•	Install nuget Newtonsoft.Json -or- modify code to use the new built-in JSON serializer
+•	Code uses .Net Core 3.0 built-in JSON serializer
 
 Again, It is highly recommend to first read the more detailed documntation which can be found [here](https://docs.microsoft.com/en-us/azure/media-services/video-indexer/video-indexer-use-apis)
 <!--
