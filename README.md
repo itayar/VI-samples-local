@@ -31,14 +31,16 @@ Contains samples code for Video Indexer API and Widgets
 |-----------------------------|-------------------------------------------------------|--------------|
 | `API`                       | Sample code of uploading and indexing video using API | eldarsh      |
 | `IntroToVideoIndexer.md`    | An intro lab to Video Indexer with exercises          | itayarb      |
-| `Widgets`                   | How to add Video Indexer widgets to your app.         | oriziv       |
-| `VideoDescriptionSample`    | Display an automatic description of VI thumbnails.    | xpouyat      |
+| `Widgets`                   | How to add Video Indexer widgets to your app          | oriziv       |
+| `VideoDescriptionSample`    | Display an automatic description of VI thumbnails     | xpouyat      |
+| `LiveStreamAnalysis`        | Using VI to create close to live stream analysis      | xpouyat      |
+| `IntegrationWithZoommedia`  | Integration with Zoommedia speech-to-text service     | victorp13    |
 | `pics`                      | Pictures used in the intro lab                        |              |
-| `.gitignore`                | Define what to ignore at commit time.                 |              |
-| `CHANGELOG.md`              | List of changes to the sample.                        |              |
-| `CONTRIBUTING.md`           | Guidelines for contributing to the sample.            |              |
-| `README.md`                 | This README file.                                     |              |
-| `LICENSE`                   | The license for the sample.                           |              |
+| `.gitignore`                | Define what to ignore at commit time                  |              |
+| `CHANGELOG.md`              | List of changes to the sample                         |              |
+| `CONTRIBUTING.md`           | Guidelines for contributing to the sample             |              |
+| `README.md`                 | This README file                                      |              |
+| `LICENSE`                   | The license for the sample                            |              |
 
 We highly recommend you will follow our [blog posts](https://azure.microsoft.com/en-us/blog/tag/video-indexer/) to get deeper insights and the most updated news.
 
