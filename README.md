@@ -3,6 +3,8 @@ page_type: sample
 languages:
 - csharp
 - javascript
+- html
+- .Net
 products:
 - videoindexer
 description: "Video Indexer Official Samples"
@@ -25,17 +27,18 @@ Welcome to the official Video Indexer (VI) Samples repo. Video indexer builds up
 
 Contains samples code for Video Indexer API and Widgets
 
-| File/folder                 | Description                                         | Owner        |
-|-----------------------------|-----------------------------------------------------|--------------|
-| `IntroToVideoIndexer.md`    | An intro lab to Video Indexer with exercises        | itayarb      |
-| `Widgets`                   | How to add Video Indexer widgets to your app.       | oriziv       |
-| `VideoDescriptionSample`    | Display an automatic description of VI thumbnails.  | xpouyat      |
-| `pics`                      | Pictures used in the intro lab                      |              |
-| `.gitignore`                | Define what to ignore at commit time.               |              |
-| `CHANGELOG.md`              | List of changes to the sample.                      |              |
-| `CONTRIBUTING.md`           | Guidelines for contributing to the sample.          |              |
-| `README.md`                 | This README file.                                   |              |
-| `LICENSE`                   | The license for the sample.                         |              |
+| File/folder                 | Description                                           | Owner        |
+|-----------------------------|-------------------------------------------------------|--------------|
+| `API`                       | Sample code of uploading and indexing video using API | eldarsh      |
+| `IntroToVideoIndexer.md`    | An intro lab to Video Indexer with exercises          | itayarb      |
+| `Widgets`                   | How to add Video Indexer widgets to your app.         | oriziv       |
+| `VideoDescriptionSample`    | Display an automatic description of VI thumbnails.    | xpouyat      |
+| `pics`                      | Pictures used in the intro lab                        |              |
+| `.gitignore`                | Define what to ignore at commit time.                 |              |
+| `CHANGELOG.md`              | List of changes to the sample.                        |              |
+| `CONTRIBUTING.md`           | Guidelines for contributing to the sample.            |              |
+| `README.md`                 | This README file.                                     |              |
+| `LICENSE`                   | The license for the sample.                           |              |
 
 We highly recommend you will follow our [blog posts](https://azure.microsoft.com/en-us/blog/tag/video-indexer/) to get deeper insights and the most updated news.
 
