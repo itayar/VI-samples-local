@@ -2,6 +2,7 @@
 page_type: How to use VI API
 languages:
 - C#
+- .Net
 products:
 - videoindexer
 description: "Video Indexer API"
