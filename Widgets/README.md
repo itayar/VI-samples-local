@@ -31,16 +31,16 @@ Contains samples code for Video Indexer API and Widgets
 
 | File/folder                       | Description                                |
 |-----------------------------------|--------------------------------------------|
-| `azure-media-player`              | The output Json files you will receive     |
-| `azure-media-player-vi-insights`  | The output Json files you will receive     |
-| `control-vi-embedded-player`      | The output Json files you will receive     |
-| `custom-index-location`           | The output Json files you will receive     |
-| `embed-both-insights`             | The output Json files you will receive     |
-| `embed-insights-with-AMP`         | The output Json files you will receive     |
-| `customize-the-widgets`           | The output Json files you will receive     |
-| `embed-both-widgets`              | The output Json files you will receive     |
-| `url-generator`                   | The output Json files you will receive     |
-| `html5-player`                    | The output Json files you will receive     |
+| `azure-media-player`              | Load video indexer video in a custom Azure Media Player                        |
+| `azure-media-player-vi-insights`  | Embed VI Insights with a custom Azure Media Player                             |
+| `control-vi-embedded-player`      | Embed VI Player and control it from outside                                    |
+| `custom-index-location`           | Embed VI Insights from a custom external location (can be customer a blob)     |
+| `embed-both-insights`             | Basic usage of VI Insights both player and insights                            |
+| `embed-insights-with-AMP`         | Embed VI Insights widget with a custom Azure Media Player                      |
+| `customize-the-widgets`           | Embed VI widgets with a customized options                                     |
+| `embed-both-widgets`              | Embed VI Player and Insights and communicate between them                      |
+| `url-generator`                   | Generates widgets custom embed url based on user specified options             |
+| `html5-player`                    | Embed VI Insights with a default HTML5 Video player                            |
 
 
 ## Prerequisites
