@@ -99,5 +99,5 @@ The template generates 3 separate Logic Apps, each taking care of one step in th
 ![Logic App flow  #3](logic_app_flow_3.png)
 
 ## More information
-For more information on how to use the Video Indexer API please see [this blog post](https://blogs.msdn.microsoft.com/golive/2018/03/26/using-microsoft-azure-video-indexer/) by Greg Oliver (@sebastus).
+For more information on how to use the Video Indexer API please see [this documentation](https://docs.microsoft.com/en-us/azure/media-services/video-indexer/upload-index-videos).
 
