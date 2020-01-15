@@ -4,8 +4,8 @@ This sample application displays an automatic description of Video Indexer thumb
 
 Screen capture :
 
-![Screen capture 1](Images/vd-img1.png?raw=true)
-![Screen capture 2](Images/vd-img2.png?raw=true)
+![Screen capture 1](images/vd-img1.png?raw=true)
+![Screen capture 2](images/vd-img2.png?raw=true)
 
 ## Azure resources needed 
 Before running the app, you need to have or create :
